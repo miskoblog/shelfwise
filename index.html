@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Shelfwise</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='4' y1='2' x2='28' y2='30' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%234636E3'/%3E%3Cstop offset='1' stop-color='%237C3AED'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Cg stroke='%23FAF9F6' stroke-width='2.6' stroke-linecap='round' fill='none'%3E%3Cpath d='M10.5 9v11.5M15 9v11.5M19 10l3.2 10.5M8 23.5h16'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="gate" id="gate">
+    <form class="gate-card" id="gateForm">
+      <span class="gate-mark" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 32 32">
+          <defs>
+            <linearGradient id="gateMarkGrad" x1="4" y1="2" x2="28" y2="30" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#4636E3" />
+              <stop offset="1" stop-color="#7C3AED" />
+            </linearGradient>
+          </defs>
+          <rect width="32" height="32" rx="8" fill="url(#gateMarkGrad)" />
+          <g stroke="#FAF9F6" stroke-width="2.6" stroke-linecap="round" fill="none">
+            <path d="M10.5 9v11.5M15 9v11.5M19 10l3.2 10.5M8 23.5h16" />
+          </g>
+        </svg>
+      </span>
+      <h1>Shelfwise</h1>
+      <p>Enter the access password to open this bonus.</p>
+      <input type="password" id="gatePassword" placeholder="Password" autocomplete="off" autofocus />
+      <button type="submit" class="primary-btn">Unlock</button>
+      <p class="gate-error" id="gateError">That password isn't right — try again.</p>
+    </form>
+  </div>
+  <script>
+    try {
+      if (localStorage.getItem("shelfwise_access") === "granted") {
+        document.getElementById("gate").classList.add("is-unlocked");
+      }
+      var storedTheme = localStorage.getItem("shelfwise_theme");
+      if (storedTheme === "dark" || storedTheme === "light") {
+        document.documentElement.setAttribute("data-theme", storedTheme);
+      }
+    } catch (e) {}
+  </script>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 32 32">
+          <defs>
+            <linearGradient id="shelfwiseMark" x1="4" y1="2" x2="28" y2="30" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#4636E3" />
+              <stop offset="1" stop-color="#7C3AED" />
+            </linearGradient>
+          </defs>
+          <rect width="32" height="32" rx="8" fill="url(#shelfwiseMark)" />
+          <g stroke="#FAF9F6" stroke-width="2.6" stroke-linecap="round" fill="none">
+            <path d="M10.5 9v11.5M15 9v11.5M19 10l3.2 10.5M8 23.5h16" />
+          </g>
+        </svg>
+      </span>
+      <div class="brand-text">
+        <span class="brand-name">Shelfwise</span>
+        <span class="brand-tag">Price it · Run it · Read it</span>
+      </div>
+    </div>
+    <a class="powered-by" href="https://misanmorrison.com/" target="_blank" rel="noopener">
+      <span>Powered by</span>
+      <strong>Misan Morrison</strong>
+    </a>
+    <nav class="tabs" role="tablist" aria-label="Shelfwise modules">
+      <button class="tab-btn is-active" data-tab="guide" role="tab" aria-selected="true">How to Use</button>
+      <button class="tab-btn" data-tab="priced" role="tab" aria-selected="false">Priced</button>
+      <button class="tab-btn" data-tab="handoff" role="tab" aria-selected="false">Handoff</button>
+      <button class="tab-btn" data-tab="tally" role="tab" aria-selected="false">Tally</button>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch between light and dark theme" title="Switch theme">
+      <svg id="themeIconSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+      <svg id="themeIconMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+    </button>
+  </header>
+
+  <main class="app">
+
+    <!-- ================================================================ GUIDE -->
+    <section class="panel is-active" id="panel-guide" role="tabpanel">
+      <div class="panel-head">
+        <h1>How to Use Shelfwise</h1>
+        <p>ProductsPilot builds your products, lists them and sends traffic. Shelfwise handles what comes after: what each sale actually pays you (<strong>Priced</strong>), the steps ProductsPilot hands back to you (<strong>Handoff</strong>), and whether your shelf is working (<strong>Tally</strong>). New here? Start with <strong>Priced → Net-Per-Sale</strong>, then log every sale in <strong>Tally → Sales Log</strong>.</p>
+      </div>
+
+      <div class="guide">
+        <div class="guide-section guide-first">
+          <h2>Before you start</h2>
+          <p>There's nothing to set up. Everything you enter saves automatically in this browser, so you can close the tab and pick up where you left off. Each module works on its own. Where one tool can use another's numbers (your fee settings, your best sellers), it picks them up automatically.</p>
+        </div>
+
+        <div class="guide-section">
+          <h2><span class="guide-number">P</span> Priced — know what each sale really pays</h2>
+          <p>Open the <span class="ui-ref">Priced</span> tab. Its three tools are listed across the top of the tab.</p>
+          <ol>
+            <li><strong>Net-Per-Sale.</strong> Type your price into <span class="ui-ref">Sale price ($)</span>. The table shows what you keep on Etsy, Gumroad and your own site after every fee. Tick <span class="ui-ref">This Etsy sale came through Offsite Ads</span> to see the 15% Offsite Ads fee. Open <span class="ui-ref">Edit fee rates</span> if a platform changes its fees; every other tool uses these rates. <span class="ui-ref">Reset to defaults</span> puts them back.</li>
+            <li><strong>Price Point Picker.</strong> Choose your <span class="ui-ref">Product category</span>, enter <span class="ui-ref">Pieces in the set</span>, tick the <span class="ui-ref">Extras included</span>, and set <span class="ui-ref">Competition in your niche</span> and <span class="ui-ref">Your shop stage</span>. You get a specific price inside the category's price band, with the reason behind it. <span class="ui-ref">Send to Payback Planner</span> carries the price across.</li>
+            <li><strong>Payback Planner.</strong> Choose <span class="ui-ref">What you paid</span>, confirm <span class="ui-ref">Average sale price ($)</span>, and split your sales across platforms. It tells you how many sales pay back your purchase, and how many cover a month of Etsy listing fees.</li>
+            <li>Every tool has <span class="ui-ref">Save</span> and <span class="ui-ref">Copy</span> buttons. Saved runs appear underneath: <span class="ui-ref">Open</span> puts all your inputs back so you can tweak and recalculate, and <span class="ui-ref">Delete</span> removes the run.</li>
+          </ol>
+        </div>
+
+        <div class="guide-section">
+          <h2><span class="guide-number">H</span> Handoff — the steps ProductsPilot leaves to you</h2>
+          <p>Open the <span class="ui-ref">Handoff</span> tab.</p>
+          <ol>
+            <li><strong>Handoff Queue.</strong> After every product you build, enter its <span class="ui-ref">Product name</span> and press <span class="ui-ref">Add Product</span>. Tick each step as you do it: <span class="ui-ref">Etsy listing pasted</span>, <span class="ui-ref">Published on Gumroad</span>, <span class="ui-ref">Link on my site / bio</span>. Use the <span class="ui-ref">+</span> and <span class="ui-ref">−</span> buttons to count Q&amp;A drafts and guest-post pitches as ProductsPilot writes them and as you post or send them. The <span class="ui-ref">Stuck</span> filter shows products that are live on Gumroad but were never pasted to Etsy. <span class="ui-ref">Today's Handoff List</span> is your to-do list for today.</li>
+            <li><strong>Buyer Reply Kit.</strong> Fill in <span class="ui-ref">Shop name</span> and the formats your product includes once. Paste a buyer's message into <span class="ui-ref">Buyer's message</span> and press <span class="ui-ref">Write Reply</span>. It works out what the buyer needs (printing, sizes, downloading, tablet planners, licence questions, refunds) and writes a reply you can copy into Etsy or Gumroad.</li>
+            <li><strong>Credit Planner.</strong> Pick the <span class="ui-ref">Month you're building in</span> and the categories you make. If you log sales in Tally, press <span class="ui-ref">Pull My Sales From Tally</span>; otherwise type your sales per category. Press <span class="ui-ref">Build My Plan</span> to see how to split your 15 monthly products, weighing upcoming seasons, what already sells for you, and what each category pays.</li>
+            <li>Each tool has <span class="ui-ref">Save</span>, <span class="ui-ref">Copy</span>, <span class="ui-ref">Open</span> and <span class="ui-ref">Delete</span>. In the Queue, <span class="ui-ref">Save</span> keeps a snapshot of the whole queue, and <span class="ui-ref">Open</span> restores it after asking you to confirm.</li>
+          </ol>
+        </div>
+
+        <div class="guide-section">
+          <h2><span class="guide-number">T</span> Tally — the numbers ProductsPilot can't see</h2>
+          <p>Open the <span class="ui-ref">Tally</span> tab. ProductsPilot has no access to your marketplace sales, so this is where you keep them.</p>
+          <ol>
+            <li><strong>Sales Log.</strong> For each sale, fill in <span class="ui-ref">Date</span>, <span class="ui-ref">Product</span>, <span class="ui-ref">Category</span>, <span class="ui-ref">Platform</span> and <span class="ui-ref">Price ($)</span>, then press <span class="ui-ref">Log Sale</span>. Fees and net are worked out for you. Use <span class="ui-ref">Show</span> to pick a month. <span class="ui-ref">Export CSV</span> downloads everything as a spreadsheet file.</li>
+            <li><strong>Listing Triage.</strong> Add each listing with its <span class="ui-ref">Date listed</span>, then copy <span class="ui-ref">Views</span>, <span class="ui-ref">Favourites</span> and <span class="ui-ref">Sales</span> from your Etsy or Gumroad stats (update them weekly in the table). <span class="ui-ref">Count Sales From Sales Log</span> fills in sales for you. Each listing gets a verdict (Too early, Visibility problem, Conversion problem, Promising, Winner) and a next step.</li>
+            <li><strong>Monthly Report.</strong> Pick the <span class="ui-ref">Report month</span> and press <span class="ui-ref">Build Report</span> for a one-page statement: money in, fees, net, best platforms and categories, how many products you added compared with the 15-a-month pace, and your winners. <span class="ui-ref">Print</span> gives a clean printout or PDF.</li>
+          </ol>
+        </div>
+
+        <div class="guide-section guide-note">
+          <h2>One thing to know</h2>
+          <p>Shelfwise has no accounts and no server, so your sales figures never leave your device. Everything is stored in this browser only: a different browser or computer starts empty, and clearing your browser data erases it. Use <span class="ui-ref">Export CSV</span> in the Sales Log now and then to keep a copy. The default fee rates are the platforms' published rates when Shelfwise was built. Check them against your own fee statements and adjust them in <span class="ui-ref">Edit fee rates</span> if needed.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ PRICED -->
+    <section class="panel" id="panel-priced" role="tabpanel">
+      <div class="panel-head">
+        <h1>Priced</h1>
+        <p>Know exactly what lands in your account before you set the price.</p>
+      </div>
+      <div class="subtabs" role="tablist" aria-label="Priced tools">
+        <button class="subtab-btn is-active" data-tool="net">Net-Per-Sale</button>
+        <button class="subtab-btn" data-tool="price">Price Point Picker</button>
+        <button class="subtab-btn" data-tool="payback">Payback Planner</button>
+      </div>
+
+      <!-- Net-Per-Sale -->
+      <div class="tool is-active" id="tool-net">
+        <div class="workspace">
+          <div class="form-card">
+            <div class="field">
+              <label for="netLabel">Product <span class="optional">(optional)</span></label>
+              <input type="text" id="netLabel" placeholder="e.g. Boho nursery wall art set" />
+            </div>
+            <div class="field">
+              <label for="netPrice">Sale price ($)</label>
+              <input type="number" id="netPrice" min="0" step="0.01" value="20" />
+            </div>
+            <div class="field check-field">
+              <label class="check"><input type="checkbox" id="netOffsite" /> This Etsy sale came through Offsite Ads</label>
+            </div>
+            <details class="fee-editor" id="feeEditor">
+              <summary>Edit fee rates</summary>
+              <div class="fee-group">
+                <div class="fee-title">Etsy</div>
+                <div class="fee-grid">
+                  <label>Transaction %<input type="number" step="0.01" min="0" id="feeEtsyTx" /></label>
+                  <label>Processing %<input type="number" step="0.01" min="0" id="feeEtsyProcPct" /></label>
+                  <label>Processing $<input type="number" step="0.01" min="0" id="feeEtsyProcFixed" /></label>
+                  <label>Listing $<input type="number" step="0.01" min="0" id="feeEtsyListing" /></label>
+                  <label>Offsite Ads %<input type="number" step="0.01" min="0" id="feeEtsyOffsite" /></label>
+                </div>
+              </div>
+              <div class="fee-group">
+                <div class="fee-title">Gumroad</div>
+                <div class="fee-grid">
+                  <label>Fee %<input type="number" step="0.01" min="0" id="feeGumPct" /></label>
+                  <label>Fee $<input type="number" step="0.01" min="0" id="feeGumFixed" /></label>
+                </div>
+              </div>
+              <div class="fee-group">
+                <div class="fee-title">Own site (card processor)</div>
+                <div class="fee-grid">
+                  <label>Fee %<input type="number" step="0.01" min="0" id="feeOwnPct" /></label>
+                  <label>Fee $<input type="number" step="0.01" min="0" id="feeOwnFixed" /></label>
+                </div>
+              </div>
+              <div class="fee-group">
+                <div class="fee-title">Other platform</div>
+                <div class="fee-grid">
+                  <label class="span-2">Name<input type="text" id="feeCustomName" /></label>
+                  <label>Fee %<input type="number" step="0.01" min="0" id="feeCustomPct" /></label>
+                  <label>Fee $<input type="number" step="0.01" min="0" id="feeCustomFixed" /></label>
+                  <label>Listing $<input type="number" step="0.01" min="0" id="feeCustomListing" /></label>
+                </div>
+              </div>
+              <button type="button" class="ghost-btn" id="feeReset">Reset to defaults</button>
+            </details>
+          </div>
+          <div>
+            <div class="output-card">
+              <div class="output-head">
+                <span class="output-label">What You Keep</span>
+                <div class="output-actions">
+                  <button class="ghost-btn" id="netSave">Save</button>
+                  <button class="ghost-btn" id="netCopy">Copy</button>
+                </div>
+              </div>
+              <div id="netOutput"></div>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head"><span class="output-label">Saved Calculations</span></div>
+              <div class="saved-list" id="netSavedList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Point Picker -->
+      <div class="tool" id="tool-price">
+        <div class="workspace">
+          <div class="form-card">
+            <div class="field">
+              <label for="priceProduct">Product <span class="optional">(optional)</span></label>
+              <input type="text" id="priceProduct" placeholder="e.g. 2027 budget planner" />
+            </div>
+            <div class="field">
+              <label for="priceCategory">Product category</label>
+              <select id="priceCategory"></select>
+            </div>
+            <div class="field two-col">
+              <label>Price band low ($)<input type="number" id="priceBandLow" min="0" step="0.5" /></label>
+              <label>Price band high ($)<input type="number" id="priceBandHigh" min="0" step="0.5" /></label>
+            </div>
+            <div class="field">
+              <label for="pricePieces">Pieces in the set</label>
+              <input type="number" id="pricePieces" min="1" step="1" value="15" />
+              <p class="hint" id="pricePiecesHint"></p>
+            </div>
+            <div class="field">
+              <label>Extras included</label>
+              <div class="check-list">
+                <label class="check"><input type="checkbox" class="priceExtra" value="sizes" checked /> US Letter &amp; A4 / every print size</label>
+                <label class="check"><input type="checkbox" class="priceExtra" value="tabs" /> Working hyperlinked tabs</label>
+                <label class="check"><input type="checkbox" class="priceExtra" value="bleed" /> Bleed &amp; trim marks</label>
+                <label class="check"><input type="checkbox" class="priceExtra" value="guide" checked /> Sizing / printing guide in the ZIP</label>
+                <label class="check"><input type="checkbox" class="priceExtra" value="license" /> Commercial-use licence offered</label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="priceCompetition">Competition in your niche</label>
+              <select id="priceCompetition">
+                <option value="low">Low (ProductsPilot scores it green)</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High (crowded category)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="priceStage">Your shop stage</label>
+              <select id="priceStage">
+                <option value="new" selected>New shop (no reviews yet)</option>
+                <option value="some">Some reviews (1–20)</option>
+                <option value="established">Established (20+ reviews)</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <div class="output-card">
+              <div class="output-head">
+                <span class="output-label">Your Price</span>
+                <div class="output-actions">
+                  <button class="ghost-btn" id="priceSave">Save</button>
+                  <button class="ghost-btn" id="priceCopy">Copy</button>
+                </div>
+              </div>
+              <div id="priceOutput"></div>
+              <button class="primary-btn mt" id="priceToPayback">Send to Payback Planner</button>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head"><span class="output-label">Saved Prices</span></div>
+              <div class="saved-list" id="priceSavedList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payback Planner -->
+      <div class="tool" id="tool-payback">
+        <div class="workspace">
+          <div class="form-card">
+            <div class="field">
+              <label for="payInvest">What you paid</label>
+              <select id="payInvest">
+                <option value="37" selected>ProductsPilot front end — $37</option>
+                <option value="230">FastPass — $230 / year</option>
+                <option value="317">Bundle Deal — $317 / year</option>
+                <option value="497">Lifetime Bundle — $497</option>
+                <option value="custom">Custom amount</option>
+              </select>
+            </div>
+            <div class="field" id="payInvestCustomWrap" hidden>
+              <label for="payInvestCustom">Custom amount ($)</label>
+              <input type="number" id="payInvestCustom" min="0" step="1" value="100" />
+            </div>
+            <div class="field">
+              <label for="payPrice">Average sale price ($)</label>
+              <input type="number" id="payPrice" min="0" step="0.01" value="20" />
+              <button type="button" class="link-btn" id="payUsePicker">Use my Price Point Picker price</button>
+            </div>
+            <div class="field">
+              <label>Where your sales happen (%)</label>
+              <div class="fee-grid three">
+                <label>Etsy<input type="number" id="payShareEtsy" min="0" max="100" step="5" value="70" /></label>
+                <label>Gumroad<input type="number" id="payShareGum" min="0" max="100" step="5" value="30" /></label>
+                <label>Own site<input type="number" id="payShareOwn" min="0" max="100" step="5" value="0" /></label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="payOffsiteShare">Etsy sales from Offsite Ads (%)</label>
+              <input type="number" id="payOffsiteShare" min="0" max="100" step="5" value="0" />
+            </div>
+            <div class="field">
+              <label for="payPerMonth">New products listed per month</label>
+              <input type="number" id="payPerMonth" min="0" step="1" value="15" />
+            </div>
+            <div class="field check-field">
+              <label class="check"><input type="checkbox" id="payEtsyListing" checked /> I list new products on Etsy (listing fee each)</label>
+            </div>
+          </div>
+          <div>
+            <div class="output-card">
+              <div class="output-head">
+                <span class="output-label">Your Payback</span>
+                <div class="output-actions">
+                  <button class="ghost-btn" id="paySave">Save</button>
+                  <button class="ghost-btn" id="payCopy">Copy</button>
+                </div>
+              </div>
+              <div id="payOutput"></div>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head"><span class="output-label">Saved Payback Plans</span></div>
+              <div class="saved-list" id="paySavedList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ HANDOFF -->
+    <section class="panel" id="panel-handoff" role="tabpanel">
+      <div class="panel-head">
+        <h1>Handoff</h1>
+        <p>Every step ProductsPilot hands back to you, queued, drafted and ticked off.</p>
+      </div>
+      <div class="subtabs" role="tablist" aria-label="Handoff tools">
+        <button class="subtab-btn is-active" data-tool="queue">Handoff Queue</button>
+        <button class="subtab-btn" data-tool="reply">Buyer Reply Kit</button>
+        <button class="subtab-btn" data-tool="credits">Credit Planner</button>
+      </div>
+
+      <!-- Handoff Queue -->
+      <div class="tool is-active" id="tool-queue">
+        <div class="workspace">
+          <div class="form-card">
+            <div class="field">
+              <label for="qName">Product name</label>
+              <input type="text" id="qName" placeholder="e.g. Terracotta nursery prints" />
+            </div>
+            <div class="field">
+              <label for="qCategory">Category</label>
+              <select id="qCategory" class="category-select"></select>
+            </div>
+            <div class="field">
+              <label for="qBuilt">Date built</label>
+              <input type="date" id="qBuilt" />
+            </div>
+            <button type="button" class="primary-btn" id="qAdd">Add Product</button>
+            <p class="hint">ProductsPilot publishes to Gumroad by itself, but the Etsy paste, the Q&amp;A answers and the guest-post pitches are yours to do. Track them here.</p>
+          </div>
+          <div>
+            <div class="output-card">
+              <div class="output-head">
+                <span class="output-label">Your Queue</span>
+                <div class="segmented small" id="qFilter">
+                  <button class="seg-btn is-active" data-filter="all">All</button>
+                  <button class="seg-btn" data-filter="stuck">Stuck</button>
+                  <button class="seg-btn" data-filter="open">Open</button>
+                  <button class="seg-btn" data-filter="done">Done</button>
+                </div>
+              </div>
+              <div id="qList"></div>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head">
+                <span class="output-label">Today's Handoff List</span>
+                <div class="output-actions">
+                  <button class="ghost-btn" id="qSave">Save</button>
+                  <button class="ghost-btn" id="qCopy">Copy</button>
+                </div>
+              </div>
+              <div id="qOutput"></div>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head"><span class="output-label">Saved Queue Snapshots</span></div>
+              <div class="saved-list" id="qSavedList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buyer Reply Kit -->
+      <div class="tool" id="tool-reply">
+        <div class="workspace">
+          <div class="form-card">
+            <div class="field two-col">
+              <label>Shop name<input type="text" id="rShop" placeholder="e.g. Willow Print Co." /></label>
+              <label>Sign off as<input type="text" id="rSigner" placeholder="e.g. Anna" /></label>
+            </div>
+            <div class="field two-col">
+              <label>Buyer's name <span class="optional">(optional)</span><input type="text" id="rBuyer" /></label>
+              <label>Product<input type="text" id="rProduct" placeholder="e.g. Budget planner" /></label>
+            </div>
+            <div class="field">
+              <label>What the product includes</label>
+              <div class="check-list">
+                <label class="check"><input type="checkbox" class="rFormat" value="paper" checked /> US Letter &amp; A4 versions</label>
+                <label class="check"><input type="checkbox" class="rFormat" value="sizes" /> Separate files per frame size</label>
+                <label class="check"><input type="checkbox" class="rFormat" value="links" /> Hyperlinked digital planner PDF</label>
+                <label class="check"><input type="checkbox" class="rFormat" value="cut" /> Cut files (SVG / PNG / DXF)</label>
+                <label class="check"><input type="checkbox" class="rFormat" value="zip" checked /> Delivered as a ZIP</label>
+              </div>
+            </div>
+            <div class="field two-col">
+              <label>Licence
+                <select id="rLicense">
+                  <option value="personal" selected>Personal use only</option>
+                  <option value="small">Small-business commercial</option>
+                  <option value="full">Full commercial use</option>
+                </select>
+              </label>
+              <label>Refund approach
+                <select id="rRefund">
+                  <option value="fix" selected>Fix it first, refund if not</option>
+                  <option value="refund">Refund straight away</option>
+                  <option value="final">Digital sales are final</option>
+                </select>
+              </label>
+            </div>
+            <div class="field">
+              <label for="rMessage">Buyer's message</label>
+              <textarea id="rMessage" rows="6" placeholder="Paste the message you received on Etsy or Gumroad…"></textarea>
+            </div>
+            <button type="button" class="primary-btn" id="rGenerate">Write Reply</button>
+          </div>
+          <div>
+            <div class="output-card">
+              <div class="output-head">
+                <span class="output-label">Your Reply</span>
+                <div class="output-actions">
+                  <button class="ghost-btn" id="rSave">Save</button>
+                  <button class="ghost-btn" id="rCopy">Copy</button>
+                </div>
+              </div>
+              <div id="rOutput"><p class="output-placeholder">Paste a buyer's message, then press Write Reply.</p></div>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head"><span class="output-label">Saved Replies</span></div>
+              <div class="saved-list" id="rSavedList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Credit Planner -->
+      <div class="tool" id="tool-credits">
+        <div class="workspace">
+          <div class="form-card">
+            <div class="field two-col">
+              <label>Month you're building in<select id="cMonth"></select></label>
+              <label>Products this month<input type="number" id="cCredits" min="1" max="60" step="1" value="15" /></label>
+            </div>
+            <div class="field">
+              <label>Categories you make, and your sales in each <span class="optional">(last 90 days)</span></label>
+              <div class="cat-table" id="cCats"></div>
+            </div>
+            <div class="btn-row">
+              <button type="button" class="ghost-btn" id="cPullTally">Pull My Sales From Tally</button>
+              <button type="button" class="primary-btn" id="cPlan">Build My Plan</button>
+            </div>
+            <p class="hint">Seasonal categories are pushed about six weeks early, because listings need time to get indexed before the rush.</p>
+          </div>
+          <div>
+            <div class="output-card">
+              <div class="output-head">
+                <span class="output-label">Your Build Plan</span>
+                <div class="output-actions">
+                  <button class="ghost-btn" id="cSave">Save</button>
+                  <button class="ghost-btn" id="cCopy">Copy</button>
+                </div>
+              </div>
+              <div id="cOutput"><p class="output-placeholder">Choose your categories, then press Build My Plan.</p></div>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head"><span class="output-label">Saved Plans</span></div>
+              <div class="saved-list" id="cSavedList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ TALLY -->
+    <section class="panel" id="panel-tally" role="tabpanel">
+      <div class="panel-head">
+        <h1>Tally</h1>
+        <p>ProductsPilot can't see your sales. Tally can.</p>
+      </div>
+      <div class="subtabs" role="tablist" aria-label="Tally tools">
+        <button class="subtab-btn is-active" data-tool="sales">Sales Log</button>
+        <button class="subtab-btn" data-tool="triage">Listing Triage</button>
+        <button class="subtab-btn" data-tool="report">Monthly Report</button>
+      </div>
+
+      <!-- Sales Log -->
+      <div class="tool is-active" id="tool-sales">
+        <div class="workspace">
+          <div class="form-card">
+            <div class="field two-col">
+              <label>Date<input type="date" id="sDate" /></label>
+              <label>Platform<select id="sPlatform" class="platform-select"></select></label>
+            </div>
+            <div class="field">
+              <label for="sProduct">Product</label>
+              <input type="text" id="sProduct" list="productNames" placeholder="e.g. Boho nursery wall art" />
+            </div>
+            <div class="field">
+              <label for="sCategory">Category</label>
+              <select id="sCategory" class="category-select"></select>
+            </div>
+            <div class="field two-col">
+              <label>Price ($)<input type="number" id="sPrice" min="0" step="0.01" /></label>
+              <label>Quantity<input type="number" id="sQty" min="1" step="1" value="1" /></label>
+            </div>
+            <div class="field check-field">
+              <label class="check"><input type="checkbox" id="sOffsite" /> Etsy Offsite Ads sale</label>
+            </div>
+            <button type="button" class="primary-btn" id="sAdd">Log Sale</button>
+          </div>
+          <div>
+            <div class="output-card">
+              <div class="output-head">
+                <span class="output-label">Your Numbers</span>
+                <div class="output-actions">
+                  <label class="inline-select">Show <select id="sMonth"></select></label>
+                  <button class="ghost-btn" id="sSave">Save</button>
+                  <button class="ghost-btn" id="sCopy">Copy</button>
+                  <button class="ghost-btn" id="sExport">Export CSV</button>
+                </div>
+              </div>
+              <div id="sOutput"></div>
+              <div id="sTable" class="table-wrap"></div>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head"><span class="output-label">Saved Ledger Snapshots</span></div>
+              <div class="saved-list" id="sSavedList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Listing Triage -->
+      <div class="tool" id="tool-triage">
+        <div class="workspace">
+          <div class="form-card">
+            <div class="field">
+              <label for="tName">Listing name</label>
+              <input type="text" id="tName" list="productNames" placeholder="e.g. Boho nursery wall art" />
+            </div>
+            <div class="field two-col">
+              <label>Category<select id="tCategory" class="category-select"></select></label>
+              <label>Platform<select id="tPlatform" class="platform-select"></select></label>
+            </div>
+            <div class="field">
+              <label for="tListed">Date listed</label>
+              <input type="date" id="tListed" />
+            </div>
+            <div class="field fee-grid three">
+              <label>Views<input type="number" id="tViews" min="0" step="1" value="0" /></label>
+              <label>Favourites<input type="number" id="tFavs" min="0" step="1" value="0" /></label>
+              <label>Sales<input type="number" id="tSales" min="0" step="1" value="0" /></label>
+            </div>
+            <button type="button" class="primary-btn" id="tAdd">Add Listing</button>
+            <p class="hint">Copy views and favourites from Etsy's Stats page or your Gumroad analytics. Update them in the table as they change.</p>
+          </div>
+          <div>
+            <div class="output-card">
+              <div class="output-head">
+                <span class="output-label">Your Listings</span>
+                <div class="output-actions">
+                  <button class="ghost-btn" id="tCountSales">Count Sales From Sales Log</button>
+                </div>
+              </div>
+              <div id="tTable" class="table-wrap"></div>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head">
+                <span class="output-label">What To Do Next</span>
+                <div class="output-actions">
+                  <button class="ghost-btn" id="tSave">Save</button>
+                  <button class="ghost-btn" id="tCopy">Copy</button>
+                </div>
+              </div>
+              <div id="tOutput"></div>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head"><span class="output-label">Saved Triage Snapshots</span></div>
+              <div class="saved-list" id="tSavedList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly Report -->
+      <div class="tool" id="tool-report">
+        <div class="workspace">
+          <div class="form-card">
+            <div class="field">
+              <label for="rpMonth">Report month</label>
+              <select id="rpMonth"></select>
+            </div>
+            <div class="field">
+              <label for="rpShop">Shop name</label>
+              <input type="text" id="rpShop" placeholder="e.g. Willow Print Co." />
+            </div>
+            <div class="field">
+              <label for="rpPace">Products you aim to add per month</label>
+              <input type="number" id="rpPace" min="1" step="1" value="15" />
+            </div>
+            <button type="button" class="primary-btn" id="rpBuild">Build Report</button>
+            <p class="hint">The report uses your Sales Log and Listing Triage data.</p>
+          </div>
+          <div>
+            <div class="output-card">
+              <div class="output-head">
+                <span class="output-label">Monthly Shelf Report</span>
+                <div class="output-actions">
+                  <button class="ghost-btn" id="rpSave">Save</button>
+                  <button class="ghost-btn" id="rpCopy">Copy</button>
+                  <button class="ghost-btn" id="rpPrint">Print</button>
+                </div>
+              </div>
+              <div id="rpOutput"><p class="output-placeholder">Pick a month, then press Build Report.</p></div>
+            </div>
+            <div class="output-card saved-card">
+              <div class="output-head"><span class="output-label">Saved Reports</span></div>
+              <div class="saved-list" id="rpSavedList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <datalist id="productNames"></datalist>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
