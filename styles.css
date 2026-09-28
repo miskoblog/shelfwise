@@ -144,6 +144,27 @@ button { font-family: inherit; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .gate-error { color: #ff8a7a; } }
 .gate-error.is-visible { display: block; }
 
+/* ---------------------------------------------------------------- how to use */
+.guide { display: flex; flex-direction: column; gap: 22px; max-width: 720px; }
+.guide-section {
+  background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px 22px;
+}
+.guide-section h2 { display: flex; align-items: center; gap: 10px; font-size: 16px; margin-bottom: 8px; }
+.guide-number {
+  display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: 12.5px; font-weight: 700; flex-shrink: 0;
+}
+.guide-section > p { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 12px; line-height: 1.55; }
+.guide-section ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+.guide-section li { font-size: 13.5px; line-height: 1.55; }
+.guide-note { background: var(--accent-soft); border-color: transparent; }
+.ui-ref {
+  display: inline-block; background: var(--accent-soft); color: var(--accent);
+  font-weight: 700; font-size: 12.5px; padding: 1px 7px; border-radius: 5px;
+}
+.guide-note .ui-ref { background: var(--bg-raised); }
+
 /* ---------------------------------------------------------------- toast */
 .toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
